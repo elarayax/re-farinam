@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <script>
+        const serverIP = localStorage.getItem('serverIP') || 'localhost';
+        // Cargar scripts dinámicamente
+        function loadScripts() {
+            const scriptUrls = [
+                `http://${serverIP}:3000/administrador/scripts/inventario.js`,
+                `http://${serverIP}:3000/administrador/scripts/router.js`,
+            ];
+            scriptUrls.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.defer = true;
+                document.head.appendChild(script);
+            });
+
+            const promises = scriptUrls.map(url => {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.defer = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            });
+
+            Promise.all(promises)
+                .then(() => {
+                    inventario();  // Ahora la función debería estar definida
+                    cargarInventario();
+                })
+                .catch((error) => {
+                    console.error('Error al cargar los scripts:', error);
+                });
+
+            const stylesPage = [
+                `http://${serverIP}:3000/estilos/global.css`,
+                `http://${serverIP}:3000/estilos/opciones.css`,
+            ]
+
+            stylesPage.forEach(url => {
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = url;
+                document.head.appendChild(style);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="navUniversal"></div>
+    <h1>Inventario</h1>
+
+    <!-- Botón para agregar producto -->
+    <button onclick="abrirModal()">Agregar Producto</button>
+
+    <!-- Contenedor de tablas de inventario -->
+    <div class="inventario-container" id="inventarioName">
+        <div id="tablas-inventario" class="tablas-inventario"></div>
+    </div>
+
+    <!-- Modal para agregar producto -->
+    <div id="modalAgregarProducto" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Agregar Producto al Inventario</h2>
+            <form id="formAgregarProducto">
+                <label for="nombreProducto">Nombre:</label>
+                <input type="text" id="nombreProducto" name="nombreProducto" required>
+
+                <label for="medidaProducto">Medida Producto:</label>
+                <select id="medidaProducto" name="medidaProducto" required></select>
+
+                <label for="categoriaProducto">Categoría:</label>
+                <select id="categoriaProducto" name="categoriaProducto" required></select>
+
+                <div id="mensaje-duplicado" style="display: none; color: red;"></div>
+
+                <a href="#" id="addCategory" onclick="addCategory()">Añadir Categoría</a>
+
+               <!-- <label for="subCategoriaProducto">Subcategoría:</label>
+                <select id="subCategoriaProducto" name="subCategoriaProducto" required></select>-->
+
+                <label for="cantidadProducto">Cantidad:</label>
+                <input type="number" id="cantidadProducto" name="cantidadProducto" required>
+
+                <label for="stockCritico">Stock Crítico:</label>
+                <input type="number" id="stockCritico" name="stockCritico" required>
+
+                <p>Categorías Añadidas</p>
+                <ul id="categoriasAñadidas"></ul>
+
+                <button type="button" onclick="guardarProducto()">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="editarProducto" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarEditar()">&times;</span>
+            <form id="productoEditar">
+                <label for="nombreProductoEditar">Nombre:</label>
+                <input type="text" id="nombreProductoEditar" name="nombreProductoEditar" required>
+                <label for="cantidadProductoEditar">Cantidad:</label>
+                <input type="number" id="cantidadProductoEditar" name="cantidadProductoEditar" required>
+    
+                <label for="stockCriticoEditar">Stock Crítico:</label>
+                <input type="number" id="stockCriticoEditar" name="stockCriticoEditar" required>
+
+                <h3>Categorías</h3>
+                <ul id="categoriasProductoEditar"></ul>
+
+                <div class="optionsModalEditar">
+                    <a href="#" id="eliminarModal">Eliminar Producto</a>
+                    <a href="#" id="editarModal">Actualizar Producto</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            loadScripts();
+        };
+    </script>
+
+    <style>
+        /* Estilos del modal y la tabla de inventario */
+        .inventario-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tabla-inventario {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .tabla-inventario th, .tabla-inventario td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .tabla-inventario th {
+            background-color: #f2f2f2;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</body>
+</html>

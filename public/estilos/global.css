@@ -1,0 +1,207 @@
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+nav{
+    background-color: blue;
+    padding: 16px 0;
+}
+
+nav a{
+    color: #fff;
+    text-decoration: none;
+    padding: 8px;
+}
+
+nav a:hover{
+    color: orange;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+.button.blue-button {
+    background-color: #4a90e2; /* Azul suave */
+    color: #fff;
+}
+
+.button.red-button {
+    background-color: #e74c3c; /* Rojo suave */
+    color: #fff;
+}
+
+.button.yellow-button {
+    background-color: #f1c40f; /* Amarillo suave */
+    color: #000; /* Texto negro para mejor contraste en fondo amarillo */
+}
+
+.button.black-button {
+    background-color: #333333; /* Negro suave */
+    color: #fff;
+}
+
+.button.gray-button {
+    background-color: #bdc3c7; /* Gris suave */
+    color: #333333; /* Texto oscuro para buen contraste */
+}
+
+/* Estilos comunes para todos los botones */
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+/* Hover effects */
+.button.blue-button:hover {
+    background-color: #357abd; /* Azul un poco más oscuro en hover */
+}
+
+.button.red-button:hover {
+    background-color: #c0392b; /* Rojo un poco más oscuro en hover */
+}
+
+.button.yellow-button:hover {
+    background-color: #d4ac0d; /* Amarillo un poco más oscuro en hover */
+}
+
+
+.button.green-button{
+    background-color: #4CAF50;
+    color: #fff
+}
+
+.button.black-button:hover {
+    background-color: #1c1c1c; /* Negro más oscuro en hover */
+}
+
+.button.gray-button:hover {
+    background-color: #a5acaf; /* Gris más oscuro en hover */
+}
+
+.centrador{
+    width: 100%;
+    display: flex;
+}
+
+.centrado{
+    width: 1300px;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedor{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.contenedor .contenedor-left{
+    width: 80%;
+}
+
+.contenedor .contenedor-right{
+    width: 20%;
+}
+
+/* Estilo general de la tabla */
+table.standar {
+    width: 95%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+/* Estilos para las celdas */
+table.standar th, table.standar td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Encabezados de la tabla */
+table.standar th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Alternar colores de las filas */
+table.standar tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Cambios de estilo al pasar el mouse */
+table.standar tr:hover {
+    background-color: #ddd;
+}
+
+table.standar td.celda-centrada {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hacer la tabla responsive */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Estilos para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+    table.standar table {
+        width: 100%;
+    }
+    
+    /* Reducir tamaño de fuente en dispositivos pequeños */
+    table.standar th, table.standar td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+@media(max-width: 1300px){
+    .centrado{
+        width: 95%;
+    }
+}
+
+@media(max-width: 650px){
+    .contenedor{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contenedor .contenedor-left{
+        width: 100%;
+    }
+    
+    .contenedor .contenedor-right{
+        width: 100%;
+    }
+}

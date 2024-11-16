@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actual</title>
+    <script>
+        const serverIP = localStorage.getItem('serverIP') || 'localhost';
+        // Cargar scripts dinámicamente
+        function loadScripts() {
+            const scriptUrls = [
+                `http://${serverIP}:3000/scripts/logic/mensajes.js`,
+                `http://${serverIP}:3000/administrador/scripts/router.js`,
+            ];
+
+            scriptUrls.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.defer = true;
+                document.head.appendChild(script);
+            });
+
+            const stylesPage = [
+                `http://${serverIP}:3000/estilos/global.css`,
+                `http://${serverIP}:3000/estilos/opciones.css`,
+                `http://${serverIP}:3000/estilos/modal.css`,
+                `http://${serverIP}:3000/estilos/mensajes.css`,
+                `http://${serverIP}:3000/estilos/usuarios.css`,
+            ]
+
+            stylesPage.forEach(url => {
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = url;
+                document.head.appendChild(style);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="navUniversal"></div>
+    <h1>Actual</h1>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <script>
+        window.onload = () => {
+            loadScripts();
+        };
+    </script>
+</body>
+</html>

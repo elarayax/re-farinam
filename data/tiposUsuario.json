@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "tipo": "superAdministrador"
+    },
+    {
+        "id": 2,
+        "tipo": "administrador"
+    },
+    {
+        "id": 3,
+        "tipo": "anfitrion"
+    },
+    {
+        "id": 4,
+        "tipo": "mesero"
+    },
+    {
+        "id": 5,
+        "tipo": "barra"
+    },
+    {
+        "id": 6,
+        "tipo": "cocina"
+    },
+    {
+        "id": 7,
+        "tipo": "caja"
+    }
+]

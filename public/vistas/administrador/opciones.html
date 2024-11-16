@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Zonas</title>
+    <script>
+        function loadScripts() {
+            const serverIP = localStorage.getItem('serverIP') || 'localhost'; // Obtener la IP del servidor o localhost
+            const scriptUrls = [
+                `http://${serverIP}:3000/administrador/scripts/zonas.js`,
+                `http://${serverIP}:3000/administrador/scripts/medidas.js`,
+                `http://${serverIP}:3000/administrador/scripts/categorias.js`,
+                `http://${serverIP}:3000/administrador/scripts/categoriasMenu.js`,
+                `http://${serverIP}:3000/administrador/scripts/router.js`,
+            ];
+
+            scriptUrls.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.defer = true; // Asegúrate de que se carguen después de que el DOM esté listo
+                document.head.appendChild(script); // Agregar el script al head
+            });
+
+            const medidasScript = document.createElement('script');
+            medidasScript.src = `http://${serverIP}:3000/administrador/scripts/medidas.js`;
+            medidasScript.defer = true;
+            medidasScript.onload = function() {
+                cargarMedidas(); // Llamada segura una vez cargado el script
+            };
+
+            document.head.appendChild(medidasScript);
+
+            const stylesPage = [
+                `http://${serverIP}:3000/estilos/global.css`,
+                `http://${serverIP}:3000/estilos/opciones.css`,
+                `http://${serverIP}:3000/estilos/modal.css`,
+            ]
+
+            stylesPage.forEach(url => {
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = url;
+                document.head.appendChild(style);
+            });
+        }
+        window.onload = loadScripts;
+    </script>
+</head>
+<body>
+    <div id="navUniversal"></div>
+    <h1 class="text-center">Opciones</h1>
+    <div class="centrador">
+        <div class="centrado">
+            <div class="create-option-item">
+                <h2>Zonas</h2>
+                <form id="zonaForm">
+                    <input type="text" id="zonaNombre" placeholder="Nombre de la zona" required>
+                    <button type="submit">Agregar Zona</button>
+                </form>
+            </div>
+            <div id="zonasListado"></div>
+            <ul id="zonasList"></ul>
+        </div>
+    </div>
+    <div class="centrador">
+        <div class="centrado">
+            <div class="create-option-item">
+                <h2>Medidas</h2>
+                <form id="medidasForm">
+                    <input type="text" id="valorInput" placeholder="Unidad de la medida" />
+                    <input type="text" id="unidadInput" placeholder="abreviación de la medida" />
+                    <button class="button" id="agregarMedidaBtn">Agregar Medida</button>
+                </form>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Unidad</th>
+                        <th>Abreviación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="medidasList"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="centrador">
+        <div class="centrado">
+            <h2>Gestión de Categorías Inventario</h2>
+            <form id="categoriaForm">
+                <input type="text" id="categoriaNombre" placeholder="Nombre de la Categoría" required />
+                <label for="comestible">¿Esta categoría es comestible?</label>
+                <input type="checkbox" name="comestible" id="comestible">
+                <button type="submit" id="agregarCategoria">Agregar Categoría</button>
+            </form>
+    
+            <!-- Lista de Categorías -->
+            <h3>Categorías</h3>
+            <div id="tablaCategorias"></div>
+            <div id="categoriasList"></div>
+            <!--<table id="">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Subcategorías</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                
+            </table>-->
+        </div>
+    </div>    
+    <div class="centrador">
+        <div class="centrado">
+            <h2>Gestión de Categorías Menú</h2>
+            <form id="categoriasMenuForm">
+                <input type="text" id="categoriasMenuNombre" placeholder="Nombre de la categoría menú" required>
+                <button type="button" onclick="addMenuCategory()">Agregar categoría menú</button>
+            </form>
+            <div id="categoriasMenuList"></div>
+        </div>
+    </div>
+    <div class="modal-background" id="modalAgregar">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModalAgregar()">&times;</button>
+            <h2 id="tituloModal"></h2>
+            <div id="generadorModal"></div>
+            <button class="modal-button" onclick="closeModalAgregar()">Aceptar</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re:Farinam</title>
+    <script>
+        let serverIP = localStorage.getItem('serverIP') || 'localhost';
+
+        function loadScripts() {
+
+            function getServerIP() {
+                const url = window.location.href;
+                const urlObj = new URL(url);
+                return urlObj.hostname;
+            }
+
+            function getClientIP() {
+                return window.location.hostname;
+            }
+
+            function checkAndStoreIP() {
+                const serverIP = getServerIP();
+                const clientIP = getClientIP();
+
+                console.log(`IP del servidor: ${serverIP}, IP del cliente: ${clientIP}`);
+                
+                // Almacenar la IP del servidor
+                localStorage.setItem('serverIP', serverIP);
+                document.getElementById("ipLocal").innerText = localStorage.getItem('serverIP') || 'localhost';
+                console.log('IP del servidor almacenada:', serverIP);
+            }
+
+            checkAndStoreIP();
+
+            const scriptUrls = [
+                `http://${serverIP}:3000/scripts/logic/mensajes.js`,
+                `http://${serverIP}:3000/scripts/apis/usuarios.js`,
+                `http://${serverIP}:3000/scripts/logic/loginIndex.js`,
+            ];
+
+            scriptUrls.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.defer = true;
+                document.head.appendChild(script);
+            });
+            const stylesPage = [
+                `http://${serverIP}:3000/estilos/global.css`,
+                `http://${serverIP}:3000/estilos/mensajes.css`,
+                `http://${serverIP}:3000/estilos/login.css`,
+            ]
+
+            stylesPage.forEach(url => {
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = url;
+                document.head.appendChild(style);
+            });
+
+
+        }
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button class="button blue-button" onclick="iniciarSesion()">Ingresar</button>
+        </form>
+    </div>
+    <a href="administrador/opciones.html">Ir a opciones</a>
+    <p id="ipLocal"></p>
+    <script>
+        
+        const apiUrl = `http://${serverIP}:3000/api/data`;
+        window.onload = () => {
+            loadScripts();
+        };
+    </script>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+</body>
+</html>

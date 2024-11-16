@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+    <script>
+        const serverIP = localStorage.getItem('serverIP') || 'localhost';
+        // Cargar scripts dinámicamente
+        function loadScripts() {
+            const scriptUrls = [
+                `http://${serverIP}:3000/administrador/scripts/menu.js`,
+                `http://${serverIP}:3000/scripts/logic/mensajes.js`,
+                `http://${serverIP}:3000/administrador/scripts/router.js`,
+            ];
+            scriptUrls.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.defer = true;
+                document.head.appendChild(script);
+            });
+
+            const promises = scriptUrls.map(url => {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.defer = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            });
+
+            Promise.all(promises)
+                .then(() => {
+                    cargarMenu();
+                })
+                .catch((error) => {
+                    console.error('Error al cargar los scripts:', error);
+                });
+
+            const stylesPage = [
+                `http://${serverIP}:3000/estilos/global.css`,
+                `http://${serverIP}:3000/estilos/opciones.css`,
+                `http://${serverIP}:3000/estilos/modal.css`,
+                `http://${serverIP}:3000/estilos/mensajes.css`,
+                `http://${serverIP}:3000/estilos/menu.css`,
+            ]
+
+            stylesPage.forEach(url => {
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = url;
+                document.head.appendChild(style);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="navUniversal"></div>
+    <h1 class="text-center">Menú</h1>
+    <div class="contenedor">
+        <div class="contenedor-left" id="tablaMenu"></div>
+        <div class="contenedor-right">
+            <button onclick="openModalAgregar()">Agregar Platillo</button>
+        </div>
+    </div>
+    <div class="modal-background" id="modalAgregar">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModalAgregar()">&times;</button>
+            <h2>Agregar plato</h2>
+            <section>
+                <label for="nombrePlato">Nombre Plato</label>
+                <input type="text" id="nombrePlato" placeholder="Nombre del Plato">
+                <label for="precioPlato">Precio Plato</label>
+                <input type="number" id="precioPlato" placeholder="Precio del Plato">
+                <label for="categoriaPlato">Categoría del Plato</label>
+                <select name="categoriaPlato" id="categoriaPlato"></select>
+                <label for="subCategoriasPlato">SubCategoria del Plato</label>
+                <select name="subCategoriasPlato" id="subCategoriasPlato"></select>
+                <label for="ingredienteInput">Buscar Ingrediente</label>
+                <input type="text" id="ingredienteInput" autocomplete="off" placeholder="Escribe para buscar ingredientes" />
+                <div id="sugerenciasIngredientes" style="display: none; background: white; border: 1px solid #ddd; max-height: 150px; overflow-y: auto;"></div>
+                <button type="button" id="agregarIngrediente">Agregar Ingrediente</button>
+
+                <ul id="listaIngredientesSeleccionados"></ul>
+                <button onclick="agregarPlato()">Agregar Plato</button>
+                <button class="modal-button" onclick="closeModalAgregar()">Cerrar</button>
+            </section>
+        </div>
+    </div>
+    <div class="modal-background" id="editarPlato">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModalEditar()">&times;</button>
+            <h2>Editar Plato</h2>
+            <section>
+                <label for="nombrePlatoEditar">Nombre Plato</label>
+                <input type="text" id="nombrePlatoEditar" placeholder="Nombre del Plato">
+                <label for="precioPlatoEditar">Precio Plato</label>
+                <input type="number" name="precioPlatoEditar" id="precioPlatoEditar">
+                <label for="categoriaPlatoEditar">Categoría del Plato</label>
+                <select name="categoriaPlatoEditar" id="categoriaPlatoEditar"></select>
+                <label for="subCategoriaPlatoEditar">SubCategoría del Plato</label>
+                <select name="subCategoriaPlatoEditar" id="subCategoriaPlatoEditar"></select>
+                <h3>Ingredientes:</h3>
+                <ul id="listadoIngredientesEditar"></ul>
+            </section>
+            <button class="modal-button" onclick="closeModalEditar()">Cerrar</button>
+        </div>
+    </div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <script>
+        window.onload = () => {
+            loadScripts();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerrar sesión</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .logout-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-button {
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <h2>¿Estás seguro que deseas cerrar sesión?</h2>
+        <button class="logout-button" id="logoutButton">Cerrar sesión</button>
+    </div>
+
+    <script>
+        const serverIP = localStorage.getItem('serverIP') || 'localhost'; 
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            // Borrar datos de sesión
+            sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('userType');
+            sessionStorage.removeItem('userId'); // o cualquier otro dato de usuario que hayas guardado
+
+            // Redirigir a la página de inicio de sesión
+            window.location.href = `http://${serverIP}:3000/`;
+        });
+    </script>
+</body>
+</html>

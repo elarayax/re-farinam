@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <script>
+        const serverIP = localStorage.getItem('serverIP') || 'localhost';
+        // Cargar scripts dinámicamente
+        function loadScripts() {
+            const scriptUrls = [
+                `http://${serverIP}:3000/scripts/logic/mensajes.js`,
+                `http://${serverIP}:3000/administrador/scripts/router.js`,
+                `http://${serverIP}:3000/administrador/scripts/usuarios.js`,
+                `http://${serverIP}:3000/scripts/apis/tiposDeUsuario.js`,
+                `http://${serverIP}:3000/scripts/apis/usuarios.js`,
+            ];
+
+            scriptUrls.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.defer = true;
+                document.head.appendChild(script);
+            });
+            
+            const stylesPage = [
+                `http://${serverIP}:3000/estilos/global.css`,
+                `http://${serverIP}:3000/estilos/opciones.css`,
+                `http://${serverIP}:3000/estilos/modal.css`,
+                `http://${serverIP}:3000/estilos/mensajes.css`,
+                `http://${serverIP}:3000/estilos/usuarios.css`,
+            ]
+
+            stylesPage.forEach(url => {
+                const style = document.createElement('link');
+                style.rel = 'stylesheet';
+                style.href = url;
+                document.head.appendChild(style);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="navUniversal"></div>
+    <h1 class="text-center">Usuarios</h1>
+    <div class="contenedor">
+        <div class="contenedor-left">
+            <div class="table-responsive" id="tablaUsuarios"></div>
+        </div>
+        <div class="contenedor-right">
+            <button class="button blue-button" onclick="openModalAgregar(null)">Agregar Usuario</button>
+        </div>
+    </div>
+    <div class="modal-background" id="modalAgregar">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModalAgregar()">&times;</button>
+            <h2 id="tituloModalAgregar">Agregar Usuario</h2>
+            <section>
+                <label for="nombreUsuario">Nombre Usuario</label>
+                <input type="text" id="nombreUsuario" placeholder="Nombre del usuario">
+                <label for="apellidoUsuario">Apellido Usuario</label>
+                <input type="text" id="apellidoUsuario" placeholder="Apellido del usuario">
+                <label for="nickNameUsuario">Nickname del usuario</label>
+                <input type="text" name="nickNameUsuario" id="nickNameUsuario">
+                <label for="tipoUsuario">Tipo de usuario</label>
+                <select name="tipoUsuario" id="tipoUsuario"></select>
+                <label for="passwordUsuario">Contraseña del usuario</label>
+                <input type="password" id="passwordUsuario" placeholder="Contraseña del usuario">
+                <div class="options-div">
+                    <button id="btnEliminarUsuario" style="display: none;">eliminar usuario</button>
+                    <button class="button blue-button" id="btnAccionesModal">Agregar usuario</button>
+                </div>
+                <button class="button gray-button" onclick="closeModalAgregar()">Cerrar</button>
+            </section>
+        </div>
+    </div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    <script>
+        window.onload = () => {
+            loadScripts();
+        };
+    </script>
+</body>
+</html>
