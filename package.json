@@ -50,8 +50,13 @@
       "artifactName": "${productName}-setup-${version}.${ext}",
       "icon": "assets/icon.ico"
     },
-    "build": {
-      "publish": "never"
-    }
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "elarayax",
+        "repo": "re-farinam",
+        "releaseType": "release"
+      }
+    ] 
   }
 }
