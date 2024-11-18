@@ -37,3 +37,9 @@ jobs:
         with:
           name: build
           path: dist/ # Carpeta donde Electron Builder genera los builds
+
+      # Paso 6: Publicar en GitHub
+      - name: Publish to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Pasa el token al entorno
+        run: npm run release
