@@ -42,5 +42,4 @@ jobs:
       - name: Publish to GitHub
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }} # Pasa el token al entorno
-          run: echo ${{ secrets.GH_TOKEN }}
         run: npm run release
