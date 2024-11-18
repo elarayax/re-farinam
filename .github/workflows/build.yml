@@ -41,5 +41,5 @@ jobs:
       # Paso 6: Publicar en GitHub
       - name: Publish to GitHub
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Pasa el token al entorno
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Pasa el token al entorno de ejecución
         run: npm run release
