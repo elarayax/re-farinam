@@ -45,9 +45,9 @@
     "win": {
       "target": [{
         "target": "nsis",
-        "arch": ["x64"],
-        "artifactName": "${productName}-setup-${version}.${ext}"
+        "arch": ["x64"]
       }],
+      "artifactName": "${productName}-setup-${version}.${ext}",
       "icon": "assets/icon.ico"
     },
     "publish": [
