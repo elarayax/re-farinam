@@ -116,4 +116,30 @@ module.exports = function(server, userDataPath, actualizarClientesWebSocketMenu)
             });
         });
     });
+
+    server.get('/api/menus/platillo', (req, res) =>{
+        fs.readFile(menuFilePath, 'utf8', (err, data) => {
+            if (err) return res.status(500).send('Error al leer inventario');
+            res.json(JSON.parse(data));
+        });
+    });
+
+    server.get('/api/menus/plato', (req, res) => {
+        const { nombre } = req.query;
+        fs.readFile(menuFilePath, 'utf8', (err, data) => {
+            if (err) return res.status(500).send('Error al leer inventario');
+    
+            let menu = JSON.parse(data);
+    
+            // Filtrar por nombre y verificar si es comestible
+            if (nombre) {
+                const lowerCaseNombre = nombre.toLowerCase();
+                menu = menu.filter(item => 
+                    item.plato.nombre.toLowerCase().includes(lowerCaseNombre)
+                );
+            }
+    
+            res.json(menu);
+        });
+    });
 }

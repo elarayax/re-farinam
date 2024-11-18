@@ -1,15 +1,3 @@
-async function obtenerPedidosActivos(serverIP) {
-    try {
-        const response = await fetch(`http://${serverIP}:3000/api/pedidos/activos`);
-        if (!response.ok) throw new Error('Error al obtener los pedidos activos');
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error al obtener los pedidos activos:', error);
-        return null;
-    }
-}
-
 async function obtenerPedidoActivoPorId(serverIP, id) {
     try {
         const response = await fetch(`http://${serverIP}:3000/api/pedidos/activos/${id}`);

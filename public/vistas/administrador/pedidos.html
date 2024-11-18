@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actual</title>
+    <title>Pedidos</title>
     <script>
         const serverIP = localStorage.getItem('serverIP') || 'localhost';
+        
         // Cargar scripts dinámicamente
         function loadScripts() {
             const scriptUrls = [
                 `http://${serverIP}:3000/scripts/logic/mensajes.js`,
+                `http://${serverIP}:3000/scripts/apis/pedidosActivos.js`,
+                `http://${serverIP}:3000/scripts/apis/zonas.js`,
+                `http://${serverIP}:3000/scripts/apis/menu.js`,
                 `http://${serverIP}:3000/administrador/scripts/router.js`,
+                `http://${serverIP}:3000/administrador/scripts/pedidos.js`,
             ];
 
             scriptUrls.forEach(url => {
@@ -19,14 +24,13 @@
                 script.defer = true;
                 document.head.appendChild(script);
             });
-
+            
             const stylesPage = [
                 `http://${serverIP}:3000/estilos/global.css`,
                 `http://${serverIP}:3000/estilos/opciones.css`,
                 `http://${serverIP}:3000/estilos/modal.css`,
-                `http://${serverIP}:3000/estilos/mensajes.css`,
-                `http://${serverIP}:3000/estilos/usuarios.css`,
-            ]
+                `http://${serverIP}:3000/estilos/pedidos.css`,
+            ];
 
             stylesPage.forEach(url => {
                 const style = document.createElement('link');
@@ -39,11 +43,35 @@
 </head>
 <body>
     <div id="navUniversal"></div>
-    <h1>Pedidos</h1>
+    <h1 class="text-center">Pedidos</h1>
+    <div class="contenedor">
+        <div class="contenedor-left">
+            <div class="table-responsive" id="tablaPedidos"></div>
+        </div>
+        <div class="contenedor-right">
+            <button class="button blue-button" onclick="openModalAgregar(null)">Agregar Pedido</button>
+        </div>
+    </div>
+    <div class="modal-background" id="modalAgregar">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModalAgregar()">×</button>
+            <h2 id="tituloModalAgregar">Formulario de Pedido</h2>
+            
+            <!-- Aquí agregaremos las preguntas dinámicamente -->
+            <div id="questionsContainer"></div>
+    
+            <!-- Botón de "Cerrar" para cerrar el modal -->
+            <button class="button gray-button" onclick="closeModalAgregar()">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Contenedor para mensajes -->
     <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+    
     <script>
         window.onload = () => {
             loadScripts();
+            cargarPedidos();
         };
     </script>
 </body>

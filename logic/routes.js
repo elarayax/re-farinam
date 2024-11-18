@@ -81,6 +81,10 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'router.js'));
     });
 
+    server.get('/administrador/scripts/pedidos.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'pedidos.js'));
+    });
+
     server.get('/scripts/apis/tiposDeUsuario.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'tiposDeUsuario.js'));
     });
@@ -91,6 +95,14 @@ function setupRoutes(server,baseDir) {
 
     server.get('/scripts/apis/pedidosActivos.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'pedidosActivos.js'));
+    });
+
+    server.get('/scripts/apis/zonas.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'zonas.js'));
+    });
+
+    server.get('/scripts/apis/menu.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'menu.js'));
     });
 
     server.get('/scripts/logic/loginIndex.js', (req, res) => {
@@ -127,6 +139,10 @@ function setupRoutes(server,baseDir) {
 
     server.get('/estilos/usuarios.css', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'estilos', 'usuarios.css'));
+    });
+
+    server.get('/estilos/pedidos.css', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'estilos', 'pedidos.css'));
     });
 }
 

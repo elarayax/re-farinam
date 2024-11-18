@@ -99,6 +99,8 @@ app.whenReady().then(() => {
     initializeUserData(); // Inicializa los datos del usuario
     createWindow();
 
+    autoUpdater.checkForUpdatesAndNotify();
+
     serverHttp.listen(PORT, '0.0.0.0', () => {
         console.log(`Servidor escuchando en http://${getLocalIP()}:${PORT}`);
     });
@@ -127,6 +129,8 @@ wss.on('connection', (ws) => {
 });
 
 // Configuración de autoUpdater
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
 autoUpdater.on('update-available', () => {
     console.log('Actualización disponible.');
 });

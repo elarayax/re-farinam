@@ -1,0 +1,39 @@
+name: Build for Windows
+
+on:
+  push:
+    branches:
+      - main # Cambia a tu rama principal si es diferente
+  pull_request: # Opcional, si quieres que también compile en PRs
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest # Ejecuta el trabajo en un entorno Windows
+
+    steps:
+      # Paso 1: Clona el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Paso 2: Configura Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Paso 3: Instala dependencias
+      - name: Install dependencies
+        run: npm install
+
+      # Paso 4: Ejecuta el build
+      - name: Build the application
+        run: npm run build
+
+      # Paso 5: Sube los artefactos (binarios generados)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: dist/ # Carpeta donde Electron Builder genera los builds
