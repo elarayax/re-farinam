@@ -1,4 +1,3 @@
-// Obtener todas las zonas
 async function obtenerZonas(serverIP) {
     try {
         const response = await fetch(`http://${serverIP}:3000/api/zonas`);
@@ -114,6 +113,7 @@ async function actualizarMesaEnZona(serverIP, zonaId, mesaNumero, mesaActualizad
     }
 }
 
+
 // Eliminar una mesa de una zona
 async function eliminarMesaDeZona(serverIP, zonaId, mesaNumero) {
     try {
@@ -127,3 +127,22 @@ async function eliminarMesaDeZona(serverIP, zonaId, mesaNumero) {
         return null;
     }
 }
+
+async function actualizarMesaEnZona(serverIP, zonaId, mesaNumero, mesaActualizada) {
+    try {
+        const response = await fetch(`http://${serverIP}:3000/api/zonas/${zonaId}/mesas/${mesaNumero}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(mesaActualizada),
+        });
+        if (!response.ok) throw new Error('Error al actualizar la mesa en la zona');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Error al actualizar la mesa con número ${mesaNumero} en la zona con ID ${zonaId}:`, error);
+        return null;
+    }
+}
+

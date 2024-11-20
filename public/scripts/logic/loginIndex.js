@@ -8,6 +8,7 @@ async function iniciarSesion(){
     if(mensaje == "no logueado"){
         generarMensaje("red","usuario y/o contraseña incorrecta");
     }else if(mensaje == "administrador" || mensaje == "superAdministrador"){
+        localStorage.setItem('usuario', usuario);
         window.location.href = `http://${serverIP}:3000/administrador/actual`;
     }else {
         generarMensaje("yellow", "vista aún no creada");

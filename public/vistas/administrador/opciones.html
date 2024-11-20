@@ -13,6 +13,9 @@
                 `http://${serverIP}:3000/administrador/scripts/categorias.js`,
                 `http://${serverIP}:3000/administrador/scripts/categoriasMenu.js`,
                 `http://${serverIP}:3000/administrador/scripts/router.js`,
+                `http://${serverIP}:3000/scripts/apis/metodosPago.js`,
+                `http://${serverIP}:3000/administrador/scripts/metodosPago.js`,
+                `http://${serverIP}:3000/scripts/logic/mensajes.js`,
             ];
 
             scriptUrls.forEach(url => {
@@ -35,6 +38,7 @@
                 `http://${serverIP}:3000/estilos/global.css`,
                 `http://${serverIP}:3000/estilos/opciones.css`,
                 `http://${serverIP}:3000/estilos/modal.css`,
+                `http://${serverIP}:3000/estilos/mensajes.css`,
             ]
 
             stylesPage.forEach(url => {
@@ -121,13 +125,25 @@
             <div id="categoriasMenuList"></div>
         </div>
     </div>
+    <div class="centrador">
+        <div class="centrado">
+            <h2>Gestión de métodos de pago</h2>
+            <form id="metodosPagoForm">
+                <input type="text" id="nombreMetodoPago" placeholder="Nombre del método de pago" required>
+                <input type="number" id="comisionMetodoPago" placeholder="Comisión del método de pago" required>
+                <button type="button" class="button green-button" onclick="addMetodoPago()">Agregar método de pago</button>
+            </form>
+            <div id="metodosPagoList"></div>
+        </div>
+    </div>
     <div class="modal-background" id="modalAgregar">
         <div class="modal-content">
             <button class="close-button" onclick="closeModalAgregar()">&times;</button>
             <h2 id="tituloModal"></h2>
             <div id="generadorModal"></div>
-            <button class="modal-button" onclick="closeModalAgregar()">Aceptar</button>
+            <button class="button green-button" onclick="closeModalAgregar()">Aceptar</button>
         </div>
     </div>
+    <div id="mensaje-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 </body>
 </html>

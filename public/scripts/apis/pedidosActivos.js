@@ -1,3 +1,15 @@
+async function obtenerPedidosActivos(serverIP) {
+    try {
+        const response = await fetch(`http://${serverIP}:3000/api/pedidos/activos/`);
+        if (!response.ok) throw new Error('Error al obtener pedidos activos');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Error al obtener el pedido activo con ID ${id}:`, error);
+        return null;
+    }
+}
+
 async function obtenerPedidoActivoPorId(serverIP, id) {
     try {
         const response = await fetch(`http://${serverIP}:3000/api/pedidos/activos/${id}`);
@@ -59,10 +71,14 @@ async function eliminarPedidoActivo(serverIP, id) {
     }
 }
 
-async function finalizarPedidoActivo(serverIP, id) {
+async function finalizarPedidoActivo(serverIP, id, dataFinalizar) {
     try {
         const response = await fetch(`http://${serverIP}:3000/api/pedidos/activos/${id}/finalizar`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataFinalizar),
         });
         if (!response.ok) throw new Error('Error al finalizar el pedido');
         const data = await response.json();
@@ -72,6 +88,7 @@ async function finalizarPedidoActivo(serverIP, id) {
         return null;
     }
 }
+
 
 async function buscarPedidosActivos(serverIP, filtros) {
     try {

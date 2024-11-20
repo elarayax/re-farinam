@@ -1,7 +1,7 @@
 // usuariosRoutes.js
 const fs = require('fs');
 const path = require('path');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = function (server, userDataPath, actualizarClientesWebSocketUsuarios) {
     const usuariosFilePath = path.join(userDataPath, 'usuarios.json');

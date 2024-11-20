@@ -136,7 +136,7 @@ module.exports = function(server, userDataPath, actualizarClientesWebSocket) {
             const zona = zonas.find(z => z.id === zonaId);
             if (!zona) return res.status(404).send('Zona no encontrada');
 
-            const mesaIndex = zona.mesas.findIndex(m => m.id === mesaNumero);
+            const mesaIndex = zona.mesas.find(m => m.numero === mesaNumero);
             if (mesaIndex === -1) return res.status(404).send('Mesa no encontrada');
 
             zona.mesas.splice(mesaIndex, 1); // Elimina la mesa de la zona
@@ -147,4 +147,61 @@ module.exports = function(server, userDataPath, actualizarClientesWebSocket) {
             });
         });
     });
+
+    server.put('/api/zonasn/:zonaId/mesas/:mesaNumero', (req, res) => {
+        const { zonaId, mesaNumero } = req.params;
+        const { estado, pedidoActual } = req.body;
+    
+        console.log('zonaId recibido:', zonaId);
+        console.log('mesaNumero recibido:', mesaNumero);
+    
+        // Decodificamos el número de mesa para manejar caracteres especiales
+        const mesaNumeroDecodificado = decodeURIComponent(mesaNumero);
+        console.log('mesaNumero decodificado:', mesaNumeroDecodificado);
+    
+        // Leemos el archivo JSON que contiene las zonas
+        fs.readFile(zonasFilePath, 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error al leer el archivo JSON:', err);
+                return res.status(500).json({ error: 'Error interno del servidor' });
+            }
+    
+            let zonas;
+            try {
+                zonas = JSON.parse(data);
+            } catch (parseError) {
+                console.error('Error al analizar el archivo JSON:', parseError);
+                return res.status(500).json({ error: 'Error en el formato del archivo JSON' });
+            }
+    
+            // Buscar la zona por ID
+            const zona = zonas.find((z) => z.id === parseInt(zonaId, 10));
+            if (!zona) {
+                console.error('Zona no encontrada:', zonaId);
+                return res.status(404).json({ error: 'Zona no encontrada' });
+            }
+    
+            // Buscar la mesa dentro de la zona por el número de mesa
+            const mesa = zona.mesas.find((m) => m.numero === mesaNumeroDecodificado);
+            if (!mesa) {
+                console.error('Mesa no encontrada en zona:', mesaNumeroDecodificado);
+                return res.status(404).json({ error: 'Mesa no encontrada' });
+            }
+    
+            // Actualizar los campos de la mesa si están presentes en el cuerpo de la solicitud
+            if (estado) mesa.estado = estado;
+            if (pedidoActual !== undefined) mesa.pedidoActual = pedidoActual;
+    
+            // Guardar los cambios en el archivo JSON
+            fs.writeFile(zonasFilePath, JSON.stringify(zonas, null, 2), 'utf8', (writeErr) => {
+                if (writeErr) {
+                    console.error('Error al guardar el archivo JSON:', writeErr);
+                    return res.status(500).json({ error: 'Error al guardar los cambios' });
+                }
+    
+                res.json({ mensaje: 'Mesa actualizada exitosamente', mesa });
+            });
+        });
+    });
+    
 };

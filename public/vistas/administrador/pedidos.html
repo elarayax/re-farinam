@@ -14,8 +14,12 @@
                 `http://${serverIP}:3000/scripts/apis/pedidosActivos.js`,
                 `http://${serverIP}:3000/scripts/apis/zonas.js`,
                 `http://${serverIP}:3000/scripts/apis/menu.js`,
+                `http://${serverIP}:3000/scripts/apis/metodosPago.js`,
                 `http://${serverIP}:3000/administrador/scripts/router.js`,
                 `http://${serverIP}:3000/administrador/scripts/pedidos.js`,
+                `http://${serverIP}:3000/administrador/scripts/slides/pedidoRetiro.js`,
+                `http://${serverIP}:3000/administrador/scripts/slides/pedidoPresencial.js`,
+                `http://${serverIP}:3000/administrador/scripts/slides/pedidoSeleccionado.js`,
             ];
 
             scriptUrls.forEach(url => {
@@ -71,7 +75,6 @@
     <script>
         window.onload = () => {
             loadScripts();
-            cargarPedidos();
         };
     </script>
 </body>

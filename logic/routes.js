@@ -4,6 +4,10 @@ function setupRoutes(server,baseDir) {
     server.get('/', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'index.html'));
     });
+
+    server.get('/updater', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'updater.html'));
+    });
     
     server.get('/administrador/opciones.html', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'opciones.html'));
@@ -69,6 +73,10 @@ function setupRoutes(server,baseDir) {
         res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'categoriasMenu.js'));
     });
 
+    server.get('/administrador/scripts/metodosPago.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'metodosPago.js'));
+    });
+
     server.get('/administrador/scripts/pedidos.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'pedidos.js'));
     });
@@ -83,6 +91,18 @@ function setupRoutes(server,baseDir) {
 
     server.get('/administrador/scripts/pedidos.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'pedidos.js'));
+    });
+
+    server.get('/administrador/scripts/slides/pedidoRetiro.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'slides', 'pedidoRetiro.js'));
+    });
+
+    server.get('/administrador/scripts/slides/pedidoPresencial.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'slides', 'pedidoPresencial.js'));
+    });
+
+    server.get('/administrador/scripts/slides/pedidoSeleccionado.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'vistas', 'administrador', 'scripts', 'slides', 'pedidoSeleccionado.js'));
     });
 
     server.get('/scripts/apis/tiposDeUsuario.js', (req, res) => {
@@ -103,6 +123,10 @@ function setupRoutes(server,baseDir) {
 
     server.get('/scripts/apis/menu.js', (req, res) => {
         res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'menu.js'));
+    });
+
+    server.get('/scripts/apis/metodosPago.js', (req, res) => {
+        res.sendFile(path.join(baseDir, 'public', 'scripts', 'apis', 'metodosPago.js'));
     });
 
     server.get('/scripts/logic/loginIndex.js', (req, res) => {

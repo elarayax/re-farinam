@@ -1,4 +1,4 @@
-const { app, BrowserWindow,ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -30,6 +30,7 @@ function initializeUserData() {
         { fileName: 'usuarios.json', source: path.join(__dirname, 'data', 'usuarios.json') },
         { fileName: 'pedidosFinalizados.json', source: path.join(__dirname, 'data', 'pedidosFinalizados.json') },
         { fileName: 'pedidosActivos.json', source: path.join(__dirname, 'data', 'pedidosActivos.json') },
+        { fileName: 'metodosPago.json', source: path.join(__dirname, 'data', 'metodosPago.json') },
     ];
 
     filesToCopy.forEach(({ fileName, source }) => {
@@ -94,9 +95,40 @@ function getLocalIP() {
     return '127.0.0.1'; // Fallback a localhost si no se encuentra
 }
 
+// Crear ventana de progreso de actualización
+let updateWindow;
+function createUpdateWindow() {
+    updateWindow = new BrowserWindow({
+        width: 500,
+        height: 300,
+        parent: null,  // Ventana flotante
+        modal: true,    // Modal para que bloquee el acceso a otras ventanas
+        show: false,    // No la mostramos hasta que esté lista
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
+    });
+
+    //updateWindow.loadURL(path.join('file://', __dirname, 'update.html'));  
+    updateWindow.loadURL(`http://localhost:3000/updater`); // Carga una vista HTML para mostrar el progreso
+
+    updateWindow.once('ready-to-show', () => {
+        updateWindow.show();  // Mostrar la ventana de actualización
+    });
+}
+
+function closeUpdateWindow() {
+    if (updateWindow) {
+        updateWindow.close();
+        updateWindow = null;
+    }
+}
+
 // Evento whenReady para inicializar la app y crear la ventana
 app.whenReady().then(() => {
     initializeUserData(); // Inicializa los datos del usuario
+    createUpdateWindow(); // Crea la ventana de actualización
     createWindow();
 
     autoUpdater.checkForUpdatesAndNotify();
@@ -131,11 +163,53 @@ wss.on('connection', (ws) => {
 // Configuración de autoUpdater
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
+
 autoUpdater.on('update-available', () => {
     console.log('Actualización disponible.');
+    // Aquí puedes notificar al usuario en la interfaz
 });
 
 autoUpdater.on('update-downloaded', () => {
     console.log('Actualización descargada. La aplicación se cerrará y se actualizará.');
+    closeUpdateWindow();  // Cerramos la ventana de progreso
     autoUpdater.quitAndInstall();
+});
+
+autoUpdater.on('checking-for-update', () => {
+    console.log('Verificando si hay actualizaciones...');
+});
+
+autoUpdater.on('update-not-available', () => {
+    console.log('No hay actualizaciones disponibles.');
+    // Aquí puedes notificar al usuario en la interfaz
+});
+
+autoUpdater.on('error', (err) => {
+    console.error('Error al verificar actualizaciones:', err);
+    // Notificar al usuario de algún error
+    closeUpdateWindow();  // Cerramos la ventana de progreso si hay un error
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+    let log_message = "Descargando: " + progressObj.percent + "%";
+    console.log(log_message);
+    // Aquí puedes actualizar la interfaz con el progreso de la descarga
+    if (updateWindow) {
+        updateWindow.webContents.send('update-progress', progressObj);  // Enviar el progreso a la ventana de actualización
+    }
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+    console.log('Actualización descargada:', info);
+    if (updateWindow) {
+        updateWindow.webContents.send('update-progress', { percent: 100 });
+        updateWindow.webContents.executeJavaScript(`
+            document.getElementById('status').innerText = "Actualización completada. Reiniciando...";
+        `);
+    }
+
+    setTimeout(() => {
+        closeUpdateWindow();
+        autoUpdater.quitAndInstall();
+    }, 3000); // Espera 3 segundos antes de reiniciar
 });
